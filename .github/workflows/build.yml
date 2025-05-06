@@ -34,8 +34,9 @@ jobs:
           ./gradlew assembleRelease  # ساخت APK در حالت Release
 
       # مرحله پنجم: آپلود فایل APK ساخته شده
-      - name: Upload APK
-        uses: actions/upload-artifact@v2  # استفاده از نسخه v2
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: apk
-          path: app/build/outputs/apk/release/*.apk  # مسیر فایل APK ساخته شده
+          files: app/build/outputs/apk/release/*.apk  # مسیر فایل APK ساخته شده
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
