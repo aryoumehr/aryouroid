@@ -35,7 +35,7 @@ jobs:
 
       # مرحله پنجم: آپلود فایل APK ساخته شده
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # استفاده از نسخه جدیدتر
         with:
           name: apk
           path: app/build/outputs/apk/release/*.apk  # مسیر فایل APK ساخته شده
