@@ -2,42 +2,31 @@ name: Build APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # مرحله اول: دریافت کد پروژه
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-      # مرحله دوم: تنظیم محیط Java
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-      # مرحله سوم: نصب Gradle (اگر نیازی به آن باشد)
-      - name: Install Gradle
-        run: |
-          sudo apt-get install -y gradle
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
-      # مرحله چهارم: ساخت فایل APK
-      - name: Build APK
-        run: |
-          ./gradlew assembleRelease  # ساخت APK در حالت Release
+    - name: Build APK
+      run: ./gradlew assembleDebug
 
-      # مرحله پنجم: آپلود فایل APK ساخته شده
-      - name: Upload APK to GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: app/build/outputs/apk/release/*.apk  # مسیر فایل APK ساخته شده
-          tag_name: "v1.0.0"  # نام نسخه یا نام ریلیز، به دلخواه شما
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
