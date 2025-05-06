@@ -38,6 +38,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: app/build/outputs/apk/release/*.apk  # مسیر فایل APK ساخته شده
-          distribution: "v1.0.0"  # نام نسخه یا نام ریلیز، به دلخواه شما
+          tag_name: "v1.0.0"  # نام نسخه یا نام ریلیز، به دلخواه شما
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
