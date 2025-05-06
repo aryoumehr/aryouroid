@@ -1,0 +1,41 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # مرحله اول: دریافت کد پروژه
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # مرحله دوم: تنظیم محیط Java
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      # مرحله سوم: نصب Gradle (اگر نیازی به آن باشد)
+      - name: Install Gradle
+        run: |
+          sudo apt-get install -y gradle
+
+      # مرحله چهارم: ساخت فایل APK
+      - name: Build APK
+        run: |
+          ./gradlew assembleRelease  # ساخت APK در حالت Release
+
+      # مرحله پنجم: آپلود فایل APK ساخته شده
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: app/build/outputs/apk/release/*.apk  # مسیر فایل APK ساخته شده
